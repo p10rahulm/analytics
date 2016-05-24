@@ -1,0 +1,32 @@
+download.file(url='https://d37djvu3ytnwxt.cloudfront.net/asset-v1:MITx+15.071x_3+1T2016+type@asset+block/CPSData.csv',destfile='CPSData.csv', method='curl')
+
+CPS= read.csv('CPSData.csv')
+str(CPS)
+summary(CPS)
+sort(table(CPS$State)) 
+t = subset(CPS,Hispanic==1)
+summary(t)
+table(CPS$Age, is.na(CPS$Married))
+tapply(is.na(CPS$Married),CP$State,mean)
+download.file(url='https://d37djvu3ytnwxt.cloudfront.net/asset-v1:MITx+15.071x_3+1T2016+type@asset+block/MetroAreaCodes.csv',destfile='MetroAreaCodes.csv', method='curl')
+MetroAreaCodes = read.csv('MetroAreaCodes.csv')
+download.file(url='https://d37djvu3ytnwxt.cloudfront.net/asset-v1:MITx+15.071x_3+1T2016+type@asset+block/CountryCodes.csv',destfile='CountryCodes.csv', method='curl')
+CountryCodes = read.csv('CountryCodes.csv')
+str(MetroAreaCodes)
+str(CountryCodes)
+CPS = merge(CPS, MetroAreaCodes, by.x="MetroAreaCode", by.y="Code", all.x=TRUE)
+str(CPS)
+summary(CPS)
+table(CPS$MetroArea)
+tapply(CPS$Hispanic, CPS$MetroArea,mean)
+sort(tapply(CPS$Race=="Asian", CPS$MetroArea,mean))
+sort(tapply(CPS$Education == "No high school diploma", CPS$MetroArea, mean,na.rm=TRUE))
+CPS = merge(x = CPS, y = CountryCodes, by.x="CountryOfBirthCode", by.y="Code", all.x=TRUE)
+
+tapply(CPS$Country!="United States",CPS$MetroArea, mean,na.rm=TRUE)
+sort(tapply(CPS$Country=="India",CPS$MetroArea, sum,na.rm=TRUE))
+summary(subset(CPS,Country == "Brazil"))
+summary(subset(CPS,Country == "Somalia"))
+
+
+
